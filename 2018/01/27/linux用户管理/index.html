@@ -79,17 +79,17 @@
 
 
 
-<meta name="description" content="添加用户命令添加一个用户的命令是adduser命令，具体的实现过程如下： 1sudo adduser username 可以添加一个用户 修改用户使用户可以使用sudo用户的权限设置在/etc/sudoer中，首先要给该文件加入写权限。查看/etc/sudoer的详细信息12~ $ ls /etc/sudoers -l-rwxr--r-- 1 root root 781 Jan 21 12:55">
+<meta name="description" content="添加用户命令添加一个用户的命令是adduser命令，具体的实现过程如下： 1sudo adduser username 可以添加一个用户,用户的名字为username. 修改用户使用户可以使用sudo用户的权限设置在/etc/sudoer中，首先要给该文件加入写权限。查看/etc/sudoer的详细信息12~ $ ls /etc/sudoers -l-rwxr--r-- 1 root root 7">
 <meta property="og:type" content="article">
 <meta property="og:title" content="linux添加用户">
 <meta property="og:url" content="http://yoursite.com/2018/01/27/linux用户管理/index.html">
 <meta property="og:site_name" content="Jimy Ma&#39;s Zone">
-<meta property="og:description" content="添加用户命令添加一个用户的命令是adduser命令，具体的实现过程如下： 1sudo adduser username 可以添加一个用户 修改用户使用户可以使用sudo用户的权限设置在/etc/sudoer中，首先要给该文件加入写权限。查看/etc/sudoer的详细信息12~ $ ls /etc/sudoers -l-rwxr--r-- 1 root root 781 Jan 21 12:55">
+<meta property="og:description" content="添加用户命令添加一个用户的命令是adduser命令，具体的实现过程如下： 1sudo adduser username 可以添加一个用户,用户的名字为username. 修改用户使用户可以使用sudo用户的权限设置在/etc/sudoer中，首先要给该文件加入写权限。查看/etc/sudoer的详细信息12~ $ ls /etc/sudoers -l-rwxr--r-- 1 root root 7">
 <meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2018-01-21T05:25:16.447Z">
+<meta property="og:updated_time" content="2018-01-21T05:28:00.981Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="linux添加用户">
-<meta name="twitter:description" content="添加用户命令添加一个用户的命令是adduser命令，具体的实现过程如下： 1sudo adduser username 可以添加一个用户 修改用户使用户可以使用sudo用户的权限设置在/etc/sudoer中，首先要给该文件加入写权限。查看/etc/sudoer的详细信息12~ $ ls /etc/sudoers -l-rwxr--r-- 1 root root 781 Jan 21 12:55">
+<meta name="twitter:description" content="添加用户命令添加一个用户的命令是adduser命令，具体的实现过程如下： 1sudo adduser username 可以添加一个用户,用户的名字为username. 修改用户使用户可以使用sudo用户的权限设置在/etc/sudoer中，首先要给该文件加入写权限。查看/etc/sudoer的详细信息12~ $ ls /etc/sudoers -l-rwxr--r-- 1 root root 7">
 
 
 
@@ -344,12 +344,12 @@
       
         <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><h1 id="添加用户命令"><a href="#添加用户命令" class="headerlink" title="添加用户命令"></a>添加用户命令</h1><p>添加一个用户的命令是adduser命令，具体的实现过程如下：</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sudo adduser username</div></pre></td></tr></table></figure>
-<p>可以添加一个用户</p>
+<p>可以添加一个用户,用户的名字为username.</p>
 <h1 id="修改用户使用户可以使用sudo"><a href="#修改用户使用户可以使用sudo" class="headerlink" title="修改用户使用户可以使用sudo"></a>修改用户使用户可以使用sudo</h1><p>用户的权限设置在/etc/sudoer中，首先要给该文件加入写权限。查看/etc/sudoer的详细信息<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">~ $ ls /etc/sudoers -l</div><div class="line">-rwxr--r-- 1 root root 781 Jan 21 12:55 /etc/sudoers</div></pre></td></tr></table></figure></p>
 <p>可以看到该文件为普通文件，拥有者为root，所在组为root，用户拥有的权限值为7，其他用户拥有的权限值为4.</p>
 <p>然后打开/etc/sudoers<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sudo visudo</div></pre></td></tr></table></figure></p>
-<p>打开后，修改<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#</span> User privilege specification</div><div class="line">root    ALL=(ALL:ALL) ALL</div></pre></td></tr></table></figure></p>
-<p>为<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#</span> User privilege specification</div><div class="line">root    ALL=(ALL:ALL) ALL</div><div class="line">prow1   ALL=(ALL:ALL) ALL</div></pre></td></tr></table></figure></p>
+<p>打开后，修改<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#</span><span class="bash"> User privilege specification</span></div><div class="line">root    ALL=(ALL:ALL) ALL</div></pre></td></tr></table></figure></p>
+<p>为<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#</span><span class="bash"> User privilege specification</span></div><div class="line">root        ALL=(ALL:ALL) ALL</div><div class="line">username    ALL=(ALL:ALL) ALL</div></pre></td></tr></table></figure></p>
 <p>这时候用户就拥有了通过sudo命令上升为超级用户的权限。</p>
 
       
