@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="题目描述用快速排序算法给输入的数据排序。 输入描述两行，第一行输入数据的长度n，第二行输入数据data[0]，data[1]，…，data[n-1]（0 &amp;lt; data[i]）。 输出描述排序后的序列 解法分析快速排序是经典算法。有好多种差不多的类型，我这里选用的是我们数据结构书上（哈工大的《数据结构》）的那种。 主要分为哪几个步骤呢？  step1: 判断数据段是不是需要进行快速排序。当找不">
+<meta property="og:type" content="article">
+<meta property="og:title" content="常用算法-快速排序">
+<meta property="og:url" content="http://yoursite.com/2018/04/03/快速排序/index.html">
+<meta property="og:site_name" content="Jimy Ma&#39;s Zone">
+<meta property="og:description" content="题目描述用快速排序算法给输入的数据排序。 输入描述两行，第一行输入数据的长度n，第二行输入数据data[0]，data[1]，…，data[n-1]（0 &amp;lt; data[i]）。 输出描述排序后的序列 解法分析快速排序是经典算法。有好多种差不多的类型，我这里选用的是我们数据结构书上（哈工大的《数据结构》）的那种。 主要分为哪几个步骤呢？  step1: 判断数据段是不是需要进行快速排序。当找不">
+<meta property="og:locale" content="zh">
+<meta property="og:updated_time" content="2018-04-03T02:16:31.804Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="常用算法-快速排序">
+<meta name="twitter:description" content="题目描述用快速排序算法给输入的数据排序。 输入描述两行，第一行输入数据的长度n，第二行输入数据data[0]，data[1]，…，data[n-1]（0 &amp;lt; data[i]）。 输出描述排序后的序列 解法分析快速排序是经典算法。有好多种差不多的类型，我这里选用的是我们数据结构书上（哈工大的《数据结构》）的那种。 主要分为哪几个步骤呢？  step1: 判断数据段是不是需要进行快速排序。当找不">
+
+<link rel="canonical" href="http://yoursite.com/2018/04/03/快速排序/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh'
+  };
+</script>
+
+  <title>常用算法-快速排序 | Jimy Ma's Zone</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Jimy Ma's Zone</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/04/03/快速排序/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Jimy Ma">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jimy Ma's Zone">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          常用算法-快速排序
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2018-04-03 00:00:00 / Modified: 10:16:31" itemprop="dateCreated datePublished" datetime="2018-04-03T00:00:00+08:00">2018-04-03</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/面试/" itemprop="url" rel="index"><span itemprop="name">面试</span></a>
+                </span>
+                  , 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/面试/常用算法/" itemprop="url" rel="index"><span itemprop="name">常用算法</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><h2 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a>题目描述</h2><p>用快速排序算法给输入的数据排序。</p>
+<h2 id="输入描述"><a href="#输入描述" class="headerlink" title="输入描述"></a>输入描述</h2><p>两行，第一行输入数据的长度n，第二行输入数据data[0]，data[1]，…，data[n-1]（0 &lt; data[i]）。</p>
+<h2 id="输出描述"><a href="#输出描述" class="headerlink" title="输出描述"></a>输出描述</h2><p>排序后的序列</p>
+<h2 id="解法分析"><a href="#解法分析" class="headerlink" title="解法分析"></a>解法分析</h2><p>快速排序是经典算法。有好多种差不多的类型，我这里选用的是我们数据结构书上（哈工大的《数据结构》）的那种。</p>
+<p>主要分为哪几个步骤呢？</p>
+<ul>
+<li><strong>step1:</strong> 判断数据段是不是需要进行快速排序。当找不到两个不相同的时候就不需要在进行了。</li>
+<li><strong>step2:</strong> 选择参考数pivot（重点）。比参考大或等于的放右边，其他放左边。注意参考数一定能够把数据分割成两部分。书上保证一定能让数据分割的办法是选取数据段中第一对儿不同的数据中较大的数。那么较小的那个数和较大的那个数就一定不会在同一个组了。</li>
+<li><strong>step3:</strong> 递归被分割的两部分数据（难点）。<ul>
+<li>首先定义两个数组的索引j，l分别为开始的位置和结束的位置。</li>
+<li>当j &lt; l时迭代下述三步直到条件(j &lt; l)不成立,此时j-1即为分割点。</li>
+<li>j &lt; l的情况下，如果data[l] &lt; pivot则将 j += 1</li>
+<li>j &lt; l的情况下，如果data[l] &gt;= pivot 则将 l -= 1</li>
+<li>交换data[j]和data[l]中的数据。</li>
+</ul>
+</li>
+<li>每一部分（begin~j-1, j~end）都进入 <strong>step1</strong>, 直至不需要在快速排序为止。</li>
+</ul>
+<h2 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h2><a id="more"></a>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;vector&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">quick_sort</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;* <span class="built_in">array</span>)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">quick_sort_array</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;* <span class="built_in">array</span>, <span class="keyword">int</span> begin, <span class="keyword">int</span> end)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">find_pivot</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;* <span class="built_in">array</span>, <span class="keyword">int</span> begin, <span class="keyword">int</span> end)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">get_partition</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;* <span class="built_in">array</span>, <span class="keyword">int</span> begin, <span class="keyword">int</span> end, <span class="keyword">int</span> pivot)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Swap</span><span class="params">(<span class="keyword">int</span>* a, <span class="keyword">int</span>*b)</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> n;</span><br><span class="line">    <span class="built_in">cin</span> &gt;&gt; n;</span><br><span class="line">    <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; <span class="built_in">array</span>;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i =<span class="number">0</span>; i &lt; n; i++)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">int</span> temp;</span><br><span class="line">        <span class="built_in">cin</span> &gt;&gt; temp;</span><br><span class="line">        <span class="built_in">array</span>.push_back(temp);</span><br><span class="line">    &#125;</span><br><span class="line">    quick_sort(&amp;<span class="built_in">array</span>);</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i : <span class="built_in">array</span>) &#123;</span><br><span class="line">        <span class="built_in">cout</span> &lt;&lt; i &lt;&lt; <span class="string">" "</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">quick_sort</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;* <span class="built_in">array</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> n = (*<span class="built_in">array</span>).size();</span><br><span class="line">    quick_sort_array(<span class="built_in">array</span>, <span class="number">0</span>, n<span class="number">-1</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">quick_sort_array</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;* <span class="built_in">array</span>, <span class="keyword">int</span> begin, <span class="keyword">int</span> end)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> pivot = find_pivot(<span class="built_in">array</span>, begin, end);</span><br><span class="line">    <span class="keyword">if</span>(pivot)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">int</span> k = get_partition(<span class="built_in">array</span>, begin, end, pivot);</span><br><span class="line">        quick_sort_array(<span class="built_in">array</span>, begin, k<span class="number">-1</span>);</span><br><span class="line">        quick_sort_array(<span class="built_in">array</span>, k, end);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">find_pivot</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;* <span class="built_in">array</span>, <span class="keyword">int</span> begin, <span class="keyword">int</span> end)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> first = (*<span class="built_in">array</span>)[begin];</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i = begin+<span class="number">1</span>; i &lt; end; i++)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span>((*<span class="built_in">array</span>)[i] != first)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">return</span> max(first, (*<span class="built_in">array</span>)[i]);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">get_partition</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;* <span class="built_in">array</span>, <span class="keyword">int</span> begin, <span class="keyword">int</span> end, <span class="keyword">int</span> pivot)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">while</span>(begin &lt; end)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">while</span>((*<span class="built_in">array</span>)[begin] &lt; pivot &amp;&amp; begin &lt; end)</span><br><span class="line">            begin += <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">while</span>((*<span class="built_in">array</span>)[end] &gt;= pivot &amp;&amp; begin &lt; end)</span><br><span class="line">            end -= <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">if</span>(begin &lt; end)</span><br><span class="line">            Swap(&amp;(*<span class="built_in">array</span>)[begin], &amp;(*<span class="built_in">array</span>)[end]);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> begin;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Swap</span><span class="params">(<span class="keyword">int</span>* a, <span class="keyword">int</span>* b)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> temp = *a;</span><br><span class="line">    *a = *b;</span><br><span class="line">    *b = temp;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2018/03/29/腾讯2017_3/" rel="prev" title="腾讯2017招聘第三题">
+      <i class="fa fa-chevron-left"></i> 腾讯2017招聘第三题
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2018/06/30/笔试成绩证明/" rel="next" title="寒武纪春招笔试成绩">
+      寒武纪春招笔试成绩 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#题目描述"><span class="nav-number">1.</span> <span class="nav-text">题目描述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#输入描述"><span class="nav-number">2.</span> <span class="nav-text">输入描述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#输出描述"><span class="nav-number">3.</span> <span class="nav-text">输出描述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#解法分析"><span class="nav-number">4.</span> <span class="nav-text">解法分析</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#代码"><span class="nav-number">5.</span> <span class="nav-text">代码</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Jimy Ma</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">41</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">27</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Jimy Ma</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script>
+<script src="/js/schemes/muse.js"></script>
+<script src="/js/next-boot.js"></script>
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

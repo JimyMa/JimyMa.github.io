@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="有关超密集组网的问题汇总为什么要研究超密集组网？5G将于2020年前后开始商用，这对通信人提出了新的挑战—在未来的网络中，将会涌现出大量的智能移动终端。对网络的容量要求大大增加。相比于4G，5G网络的容量需求将有1000倍的增长，届时，终端无处不在，并且在大型的热点区域，如商场，露天展台等存在着大量的连接设备。同时，不同的移动终端也会有不同的业务需求，这也就导致了业务需求的多样化。基站的密集部署迫">
+<meta property="og:type" content="article">
+<meta property="og:title" content="有关超密集组网的问题汇总（持续更新）">
+<meta property="og:url" content="http://yoursite.com/2018/03/22/UDNsQA/index.html">
+<meta property="og:site_name" content="Jimy Ma&#39;s Zone">
+<meta property="og:description" content="有关超密集组网的问题汇总为什么要研究超密集组网？5G将于2020年前后开始商用，这对通信人提出了新的挑战—在未来的网络中，将会涌现出大量的智能移动终端。对网络的容量要求大大增加。相比于4G，5G网络的容量需求将有1000倍的增长，届时，终端无处不在，并且在大型的热点区域，如商场，露天展台等存在着大量的连接设备。同时，不同的移动终端也会有不同的业务需求，这也就导致了业务需求的多样化。基站的密集部署迫">
+<meta property="og:locale" content="zh">
+<meta property="og:updated_time" content="2018-05-22T08:29:04.544Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="有关超密集组网的问题汇总（持续更新）">
+<meta name="twitter:description" content="有关超密集组网的问题汇总为什么要研究超密集组网？5G将于2020年前后开始商用，这对通信人提出了新的挑战—在未来的网络中，将会涌现出大量的智能移动终端。对网络的容量要求大大增加。相比于4G，5G网络的容量需求将有1000倍的增长，届时，终端无处不在，并且在大型的热点区域，如商场，露天展台等存在着大量的连接设备。同时，不同的移动终端也会有不同的业务需求，这也就导致了业务需求的多样化。基站的密集部署迫">
+
+<link rel="canonical" href="http://yoursite.com/2018/03/22/UDNsQA/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh'
+  };
+</script>
+
+  <title>有关超密集组网的问题汇总（持续更新） | Jimy Ma's Zone</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Jimy Ma's Zone</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/03/22/UDNsQA/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Jimy Ma">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jimy Ma's Zone">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          有关超密集组网的问题汇总（持续更新）
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2018-03-22 00:00:00" itemprop="dateCreated datePublished" datetime="2018-03-22T00:00:00+08:00">2018-03-22</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2018-05-22 16:29:04" itemprop="dateModified" datetime="2018-05-22T16:29:04+08:00">2018-05-22</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Communication/" itemprop="url" rel="index"><span itemprop="name">Communication</span></a>
+                </span>
+                  , 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Communication/Wireless-networks/" itemprop="url" rel="index"><span itemprop="name">Wireless networks</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><h1 id="有关超密集组网的问题汇总"><a href="#有关超密集组网的问题汇总" class="headerlink" title="有关超密集组网的问题汇总"></a>有关超密集组网的问题汇总</h1><h2 id="为什么要研究超密集组网？"><a href="#为什么要研究超密集组网？" class="headerlink" title="为什么要研究超密集组网？"></a>为什么要研究超密集组网？</h2><p>5G将于2020年前后开始商用，这对通信人提出了新的挑战—在未来的网络中，将会涌现出大量的智能移动终端。对网络的容量要求大大增加。相比于4G，5G网络的容量需求将有1000倍的增长，届时，终端无处不在，并且在大型的热点区域，如商场，露天展台等存在着大量的连接设备。同时，不同的移动终端也会有不同的业务需求，这也就导致了业务需求的多样化。基站的密集部署迫在眉睫。超密集组网应运而生。超密集组网将用于满足区域面积内超高的容量需求，为移动终端提供无缝的网络切换，让用户在无论何时，无论何地都能拥有超高速的上网和通话体验。超密集组网在区域面积内放置了更多的基站，这是能够提供巨大容量增益一种十分可靠的技术。通过在宏基站的热点区域放置小的基站，也可以实现在小区内的任何地点都可以流畅通信的愿景。</p>
+<p>超密集组网,在分层异构网络的基础上,部署高密度低功耗的小型网络来实现系统容量的大幅提升.</p>
+<p>然而随着网络的密集程度的提高，需要设计出不同于当前网络的新的技术和新的组网方案。密集的网络使得基站之间的距离更近，随之带来的小基站之间干扰问题越发明显。区域的单位面积谱效率和干扰已然成为了当前场景下的一对主要矛盾。因此需要有新的干扰管理技术，新的资源分配和功率控制算法，充分协调现有的或者将要部署的小基站之间的关系，从而消除小基站之间的干扰，达到容量提升的目的。因此我们要研究超密集组网。研究超密集组网，实则研究的是干扰和容量这对主要矛盾。</p>
+<p>微小区网络和异构网络提供了更高的频谱自由度，被认为是完成5G容量挑战的可靠的技术。</p>
+<h2 id="为什么基站的部署采用基于泊松点过程的随机几何模型？"><a href="#为什么基站的部署采用基于泊松点过程的随机几何模型？" class="headerlink" title="为什么基站的部署采用基于泊松点过程的随机几何模型？"></a>为什么基站的部署采用基于泊松点过程的随机几何模型？</h2><p>采用基于泊松点过程的随机几何模型的原因主要为以下四点：</p>
+<ol>
+<li>基于格形的基站建模的某些重要的网络性能指标，如中断概率，区域面积谱效率只能通过基于蒙特卡洛的仿真得到。</li>
+<li>基于格形的基站模型过于理想化。</li>
+<li>在当前的小基站场景下，网络是密集部署的，许多微基站和家庭基站的部署呈现自组织性。其部署是自由部署的而不是由运营商统一部署的。那么采用泊松点过程的随机几何模型可以很好的反应这一随机性。</li>
+<li>基于泊松点过程的随机集合模型得到的性能指标，如中断概率，很逼近实际的无线网络，更明确地说，是实际无线网络的性能指标的下界。</li>
+</ol>
+<h2 id="在什么情况下，用户的分布服从围绕基站的二维高斯分布的假设是合理的？"><a href="#在什么情况下，用户的分布服从围绕基站的二维高斯分布的假设是合理的？" class="headerlink" title="在什么情况下，用户的分布服从围绕基站的二维高斯分布的假设是合理的？"></a>在什么情况下，用户的分布服从围绕基站的二维高斯分布的假设是合理的？</h2><p>在密集热点区域无线网络场景中，由于网络的异构性和随机性，那么将基站假设服从在区域内的泊松点过程是合理的。<br>但由于小区的异构特性，因此区域的中心还存在一个宏基站。<br>在正常情况下，宏基站覆盖的范围内，由于用户较为分散，基站覆盖的范围比较大，因此用户的统计特性不明显，因此宏基站中的用户服从在区域内的随机分布是十分合理的。<br>但是小区是一个异构的网络，区域中还存在很多的微基站，而微基站是为了服务热点区域而部署的。<br>而热点区域内，距离微基站较近的区域，受到热点的影响较强烈，因此处于热点附近的区域用户的密度较高。<br>距微基站较远的区域，受到热点的影响较小，因此其用户的分布规律不明显，用户的分布规律逐渐与宏基站服务范围内的其他区域的用户统计分布规律是相同的，近似的服从随机分布。</p>
+<p>也就是说，对于宏基站的非热点区域，由于宏基站覆盖的范围较大，其统计分布规律不明显，因此假设其服从均匀分布。<br>而对于宏基站的热点区域，由于热点区域的覆盖范围较小，距离微基站近的区域收到热点的影响较强，因此用户的密度较大，反之距离微基站远的区域受到热点的影响较弱，因此统计规律和均匀分布的情况下的统计分布规律大体上是相同的。<br>综上所述，将微基站的用户统计分布规律假设成为二维高斯分布是合理的。二维高斯分布不仅可以很合理的刻画用户的统计分布规律，而且二维高斯分布是客观世界中常用的一种分布的类型，因此易于去归纳其中的统计规律。</p>
+<h2 id="为什么要研究干扰消除算法"><a href="#为什么要研究干扰消除算法" class="headerlink" title="为什么要研究干扰消除算法"></a>为什么要研究干扰消除算法</h2><p>超密站点组网在提升覆盖的同时在一定程度上也带来了干扰的抬升。干扰问题已经成为影响边缘用户体验的关键因素。现网数据表明在小区边缘，用户体验速率只有小区平均速率的10%左右。</p>
+<h2 id="CRAN与超密集组网结合的实例"><a href="#CRAN与超密集组网结合的实例" class="headerlink" title="CRAN与超密集组网结合的实例"></a>CRAN与超密集组网结合的实例</h2><ul>
+<li>HUAWEI CloudBB</li>
+</ul>
+<h2 id="在超密集组网场景下使用CRAN所面临的挑战（2017-JSAC）"><a href="#在超密集组网场景下使用CRAN所面临的挑战（2017-JSAC）" class="headerlink" title="在超密集组网场景下使用CRAN所面临的挑战（2017 JSAC）"></a>在超密集组网场景下使用CRAN所面临的挑战（2017 JSAC）</h2><ul>
+<li>能量消耗大<ul>
+<li>密集部署的RRH势必会导致很高的能量花销，即使只有区域内只有少量的容量需求。</li>
+<li>如果RRH服务所有的用户，那么前向链路上的将会消耗很大的功率。</li>
+</ul>
+</li>
+<li>有限的前向容量</li>
+<li>计算复杂度高</li>
+<li>不完整的CSI</li>
+<li>高延迟（5G要求一次有效通信的延迟不能超过1ms）</li>
+</ul>
+<h2 id="为什么要在超密集组网场景下引入CRAN？"><a href="#为什么要在超密集组网场景下引入CRAN？" class="headerlink" title="为什么要在超密集组网场景下引入CRAN？"></a>为什么要在超密集组网场景下引入CRAN？</h2><ul>
+<li>CRAN是干扰协调和频谱资源管理的有效的方法。</li>
+<li>由于RRH结构简单，RRH可以以较低的硬件成本进行密集的布放。</li>
+<li>由于中心化的架构，多用户干扰可以被诸如CoMP这样的多点协作技术有效的解决掉，这样将会有很有效的性能增益。</li>
+<li>在传统的CRAN架构中（4G），C-RAN被部署用于连接宏基站和BBU池，由于BBU和RRH之间的传输路径长，这种传统的基站会造成很大的传输时延，而在密集热点区域采用C-RAN架构，延迟也会被大大的缩短。</li>
+<li>BBU池化后资源统一调度，能量效率更高</li>
+<li>有效解决潮汐效应的一种方式</li>
+</ul>
+<h2 id="在超密集组网场景下需要对CRAN做何改进？"><a href="#在超密集组网场景下需要对CRAN做何改进？" class="headerlink" title="在超密集组网场景下需要对CRAN做何改进？"></a>在超密集组网场景下需要对CRAN做何改进？</h2><ul>
+<li>减小功耗<ul>
+<li>RRH睡眠与活跃状态的选择</li>
+<li>用户的RRH选择</li>
+</ul>
+</li>
+<li>低花费的前向链路（低前向链路的容量需求）</li>
+<li>毫米波</li>
+<li>降低计算复杂度</li>
+<li>降低训练开销</li>
+<li>不完整的CSI下的传输策略</li>
+</ul>
+<h2 id="LTE的帧结构"><a href="#LTE的帧结构" class="headerlink" title="LTE的帧结构"></a>LTE的帧结构</h2><p>在LTE的帧结构中，都有资源块的概念。一个资源块的带宽为180kHz，由12个带宽为15kHz的子载波组成，在时域上为一个时隙（0.5ms），所以1个RB在时频上实际上是1个0.5ms，带宽180kHz的载波。<br> 有两种循环前缀，一种是一般循环前缀（Normal CP），一个时隙里可以传7个OFDM；另一种是扩展循环前缀（Extended CP），一个时隙里可以传6个OFDM。<br>Extended CP可以更好的抑制多径延迟造成的符号间干扰、载频间干扰，但是它一个时隙只能传6个OFDM，和Normal CP相比代价是更低的系统容量，在LTE中默认使用Normal CP。<br>一个OFDM符号的数据承载能力就取决于调制方式，分别为2/4/6个bit（对应QPSK,16QAM,64QAM）。<br>LTE在20MHz带宽下RB数为100个，在1.4MHz带宽时为6个，1.4MHz定义为最小频宽是因为PBCH,PSCH,SSCH最少都要占用6个RB。<br>在20MHz带宽的情况下，可以有的RB数目=20MHz/180KHz=111个，要除去冗余可用的RB数也就是100个。</p>
+<p>一个时隙（0.5ms）内传输7个OFDM符号，即在1ms内传输14个OFDM符号，一个资源块（RB）有12个子载波（即每个OFDM在频域上也就是15KHZ），所以1ms内（二个RB）的OFDM个数为=14*12=168个， 它下行采用OFDM技术，每个OFDM包含6个bits，则20M带宽时下行速率为：</p>
+<ul>
+<li>6*168*100*1000=100800000Bits/s=100Mb</li>
+</ul>
+<p>因为我们前面说了，20MHz带宽理论值可以有111个RB的，所以LTE 20M带宽下可以达到的速率也有可能超过100Mb。</p>
+<h2 id="为什么要进行资源分配，lte如何进行资源分配"><a href="#为什么要进行资源分配，lte如何进行资源分配" class="headerlink" title="为什么要进行资源分配，lte如何进行资源分配"></a>为什么要进行资源分配，lte如何进行资源分配</h2><p>在现代的通信系统中，由于移动用户多，接入事件长，用户需求多样，导致系统的业务量需求很大，因此也导致了很大的能量开销。日益增长的接入点数量与数据量的需求与稀缺的频谱资源构成了当代系统的一对儿主要矛盾。因此急需一个好的资源分配算法来增加频谱的利用效率来保证系统的正常运行。在 TD-LTE 中，资源分配是通过时频资源的分配来进行的，通过时频资源块的划分，将通信的资源划分为很多的 RB(resource block)。而当前的频谱利用率只有15%~85%。</p>
+<p>RB 分为物理资源块和虚拟资源块，物理资源块是表示在实际的物理位置的资源块，虚拟资源块表示的是映射的资源块，虚拟资源块按照映射方式分为两种，一种是集中式映射一种是分布式映射。集中式映射中用户使用连续的资源块传输，而在分布式映射中，用户使用离散的资源块传输。相比集中式映射，分布式映射更加灵活，具有更高的分集增益。</p>
+<p>在 LTE 系统中常用的资源调度分配的算法一般都是按照用户的优先级来进行的，根据系统偏好按照优先级分配不同质量的资源给不同的用户，来达到整体上性能的提升。一般影响用户的优先级的因素有如下一些：</p>
+<ol>
+<li>信道信噪比：根据信道状态来划分优先级，信噪比越好优先级越高。</li>
+<li>用户 QoS 的需求：对 QoS 要求越高的用户获得越高的优先级定义。</li>
+<li>历史资源分配记录：近期分配了较多的资源块的用户，优先级要降低。</li>
+<li>缓冲区状态：避免接收端缓冲区溢出而设计，接收端缓冲区大的分配的优先级高。</li>
+</ol>
+<p>在 LTE 系统中，下行调度需要 UE 和 ENB 的信息交互，UE 要上报自己接收到的参考信号计算出的 CQI，基站则根据此判断信道的质量。基站进行调度之后通过 PDCCH 信道发送相关的调度信息给 UE。基本流程如下：</p>
+<ol>
+<li>UE 接收参考信号，算出 CQI 的值，将其上报给基站；</li>
+<li>基站接收到上报的 CQI 和本地检测的相关信息对信道质量进行评估；</li>
+<li>基站侧为 UE 选择合适的调制和编码方案(MCS)；</li>
+<li>在 PDCCH 中将 MCS 和调度资源分配方案发送到 UE；</li>
+<li>UE 通过读取 PDCCH 信息获知发送给自己的信息将在哪里，通过对应的调制编码方法去接收对应的消息。</li>
+</ol>
+<p>常用的调度算法有比例公平算法，轮询算法和最大载干比算法。</p>
+<h2 id="什么是OFDMA以及OFDMA的优势"><a href="#什么是OFDMA以及OFDMA的优势" class="headerlink" title="什么是OFDMA以及OFDMA的优势"></a>什么是OFDMA以及OFDMA的优势</h2><p>正交频分多直接入(OFDMA) 被许多无线通信的标准所采用。它可以支持多用户，并且可以灵活的利用频谱。在OFDMA系统中，频谱被分成多个子载波，根据不同的信道状态分配给不同的用户。将信道条件好的的子载波分给由高速业务需求的用户，并将信道条件较差的子载波空置。子载波的动态分配也增强了频谱利用的灵活性。OFDMA被用在了lte中,其可以有效的解决多径衰落,增加系统的容量。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2018/03/19/读了凡四训(一)/" rel="prev" title="读《了凡四训》(一)">
+      <i class="fa fa-chevron-left"></i> 读《了凡四训》(一)
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2018/03/25/今日头条春招第一次笔试题(三)/" rel="next" title="今日头条春招第一次笔试题(三)">
+      今日头条春招第一次笔试题(三) <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#有关超密集组网的问题汇总"><span class="nav-number">1.</span> <span class="nav-text">有关超密集组网的问题汇总</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#为什么要研究超密集组网？"><span class="nav-number">1.1.</span> <span class="nav-text">为什么要研究超密集组网？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#为什么基站的部署采用基于泊松点过程的随机几何模型？"><span class="nav-number">1.2.</span> <span class="nav-text">为什么基站的部署采用基于泊松点过程的随机几何模型？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#在什么情况下，用户的分布服从围绕基站的二维高斯分布的假设是合理的？"><span class="nav-number">1.3.</span> <span class="nav-text">在什么情况下，用户的分布服从围绕基站的二维高斯分布的假设是合理的？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#为什么要研究干扰消除算法"><span class="nav-number">1.4.</span> <span class="nav-text">为什么要研究干扰消除算法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#CRAN与超密集组网结合的实例"><span class="nav-number">1.5.</span> <span class="nav-text">CRAN与超密集组网结合的实例</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#在超密集组网场景下使用CRAN所面临的挑战（2017-JSAC）"><span class="nav-number">1.6.</span> <span class="nav-text">在超密集组网场景下使用CRAN所面临的挑战（2017 JSAC）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#为什么要在超密集组网场景下引入CRAN？"><span class="nav-number">1.7.</span> <span class="nav-text">为什么要在超密集组网场景下引入CRAN？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#在超密集组网场景下需要对CRAN做何改进？"><span class="nav-number">1.8.</span> <span class="nav-text">在超密集组网场景下需要对CRAN做何改进？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#LTE的帧结构"><span class="nav-number">1.9.</span> <span class="nav-text">LTE的帧结构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#为什么要进行资源分配，lte如何进行资源分配"><span class="nav-number">1.10.</span> <span class="nav-text">为什么要进行资源分配，lte如何进行资源分配</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#什么是OFDMA以及OFDMA的优势"><span class="nav-number">1.11.</span> <span class="nav-text">什么是OFDMA以及OFDMA的优势</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Jimy Ma</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">41</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">27</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Jimy Ma</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script>
+<script src="/js/schemes/muse.js"></script>
+<script src="/js/next-boot.js"></script>
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

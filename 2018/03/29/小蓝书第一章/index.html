@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="统计学习方法第一章统计学习 定义：对数据的预测和分析。 研究对象：数据（特征）（数字、文字、图像、音视频等）（离散、连续） 方法：本书的主要内容 平台：计算机及网络 中心：模型的选择与学习 目的：对数据预测、分析（性能的提高、为我们提供新的知识、带来新的发现） 假设：同类数据具有一定的统计特性。  的一门交叉学科。 统计学习的三要素 模型 策略（评价准则） 算法">
+<meta property="og:type" content="article">
+<meta property="og:title" content="读统计学习方法（一）">
+<meta property="og:url" content="http://yoursite.com/2018/03/29/小蓝书第一章/index.html">
+<meta property="og:site_name" content="Jimy Ma&#39;s Zone">
+<meta property="og:description" content="统计学习方法第一章统计学习 定义：对数据的预测和分析。 研究对象：数据（特征）（数字、文字、图像、音视频等）（离散、连续） 方法：本书的主要内容 平台：计算机及网络 中心：模型的选择与学习 目的：对数据预测、分析（性能的提高、为我们提供新的知识、带来新的发现） 假设：同类数据具有一定的统计特性。  的一门交叉学科。 统计学习的三要素 模型 策略（评价准则） 算法">
+<meta property="og:locale" content="zh">
+<meta property="og:updated_time" content="2018-03-29T16:54:49.372Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="读统计学习方法（一）">
+<meta name="twitter:description" content="统计学习方法第一章统计学习 定义：对数据的预测和分析。 研究对象：数据（特征）（数字、文字、图像、音视频等）（离散、连续） 方法：本书的主要内容 平台：计算机及网络 中心：模型的选择与学习 目的：对数据预测、分析（性能的提高、为我们提供新的知识、带来新的发现） 假设：同类数据具有一定的统计特性。  的一门交叉学科。 统计学习的三要素 模型 策略（评价准则） 算法">
+
+<link rel="canonical" href="http://yoursite.com/2018/03/29/小蓝书第一章/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh'
+  };
+</script>
+
+  <title>读统计学习方法（一） | Jimy Ma's Zone</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Jimy Ma's Zone</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/03/29/小蓝书第一章/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Jimy Ma">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jimy Ma's Zone">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          读统计学习方法（一）
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2018-03-29 00:00:00" itemprop="dateCreated datePublished" datetime="2018-03-29T00:00:00+08:00">2018-03-29</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2018-03-30 00:54:49" itemprop="dateModified" datetime="2018-03-30T00:54:49+08:00">2018-03-30</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Statistics/" itemprop="url" rel="index"><span itemprop="name">Statistics</span></a>
+                </span>
+                  , 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Statistics/Machine-learning/" itemprop="url" rel="index"><span itemprop="name">Machine learning</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><h1 id="统计学习方法第一章"><a href="#统计学习方法第一章" class="headerlink" title="统计学习方法第一章"></a>统计学习方法第一章</h1><h2 id="统计学习"><a href="#统计学习" class="headerlink" title="统计学习"></a>统计学习</h2><ul>
+<li>定义：对数据的预测和分析。</li>
+<li>研究对象：数据（特征）（数字、文字、图像、音视频等）（离散、连续）</li>
+<li>方法：本书的主要内容</li>
+<li>平台：计算机及网络</li>
+<li>中心：模型的选择与学习</li>
+<li>目的：对数据预测、分析（性能的提高、为我们提供新的知识、带来新的发现）</li>
+<li>假设：同类数据具有一定的统计特性。</li>
+</ul>
+<p>的一门交叉学科。</p>
+<h2 id="统计学习的三要素"><a href="#统计学习的三要素" class="headerlink" title="统计学习的三要素"></a>统计学习的三要素</h2><ul>
+<li>模型</li>
+<li>策略（评价准则）</li>
+<li>算法<a id="more"></a>
+<h2 id="统计学习方法解决的问题"><a href="#统计学习方法解决的问题" class="headerlink" title="统计学习方法解决的问题"></a>统计学习方法解决的问题</h2></li>
+<li>分类问题</li>
+<li>标注问题</li>
+<li>回归问题</li>
+</ul>
+<h2 id="学习的定义"><a href="#学习的定义" class="headerlink" title="学习的定义"></a>学习的定义</h2><ul>
+<li>执行某个过程而改善它的性能。学习要做到准确和高效，就是所谓的可靠性和有效性。</li>
+</ul>
+<h2 id="统计学习方法的研究内容"><a href="#统计学习方法的研究内容" class="headerlink" title="统计学习方法的研究内容"></a>统计学习方法的研究内容</h2><ul>
+<li>统计学习方法</li>
+<li>统计学习理论(算法的有效性,可靠性)</li>
+<li>应用</li>
+</ul>
+<h2 id="统计学习方法的重要性"><a href="#统计学习方法的重要性" class="headerlink" title="统计学习方法的重要性"></a>统计学习方法的重要性</h2><ul>
+<li>处理海量数据的有效的方法. 很好的应对不确定性.</li>
+<li>智能化的有效手段. 可以模仿人的智能(好还是不好?).</li>
+<li>计算机科学(系统,计算,信息)的重要的组成部分. 是信息技术的核心.</li>
+</ul>
+<h1 id="监督学习"><a href="#监督学习" class="headerlink" title="监督学习"></a>监督学习</h1><p>输入 —&gt; 模型 —&gt; 输出</p>
+<h2 id="输入空间-输出空间和特征空间"><a href="#输入空间-输出空间和特征空间" class="headerlink" title="输入空间, 输出空间和特征空间"></a>输入空间, 输出空间和特征空间</h2><ul>
+<li>所有输入$x$,输出$y$,特征的所有可能取值的集合成为输入空间$X$,输出空间$Y$和特征空间(有限空间,欧氏空间).</li>
+</ul>
+<h2 id="训练数据集"><a href="#训练数据集" class="headerlink" title="训练数据集"></a>训练数据集</h2><p>$T = {(x_1,y_1),(x_2,y_2),…,(x_n,y_n)}$<br>其中,每个tuple$(x_i,y_i)$都称为一个样本.</p>
+<p>根据输入输出的类型,可以对监督学习进行分类</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:center"></th>
+<th style="text-align:center">输入变量</th>
+<th style="text-align:center">输出变量</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">回归问题</td>
+<td style="text-align:center">连续</td>
+<td style="text-align:center">连续</td>
+</tr>
+<tr>
+<td style="text-align:center">分类问题</td>
+<td style="text-align:center">/</td>
+<td style="text-align:center">离散</td>
+</tr>
+<tr>
+<td style="text-align:center">标注问题</td>
+<td style="text-align:center">变量序列</td>
+<td style="text-align:center">变量序列</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h2 id="假设条件"><a href="#假设条件" class="headerlink" title="假设条件"></a>假设条件</h2><ul>
+<li>训练书籍和测试数据依联合分布概率$P(X,Y)$</li>
+</ul>
+<h2 id="假设空间-学习范围"><a href="#假设空间-学习范围" class="headerlink" title="假设空间(学习范围)"></a>假设空间(学习范围)</h2><ul>
+<li>输入空间到输出空间映射的集合$\mathcal{F}$.</li>
+</ul>
+<script type="math/tex; mode=display">
+\begin{align}
+\mathcal{F} &= \{f \mid f(X)=Y \} = \{ f \mid f_\theta(x)=Y\theta\in \mathbb{R}^n \} \\
+&= \{ P\mid P(Y\mid X) \} = \{P_\theta\mid P(Y\mid X)\theta\in \mathbb{R}^n \}
+\end{align}</script><p>模型可以有概率模型$P(Y|X)$或由非概率模型的决策函数$Y=f(x)$表示</p>
+<h2 id="具体实现的过程"><a href="#具体实现的过程" class="headerlink" title="具体实现的过程"></a>具体实现的过程</h2><ol>
+<li>学习</li>
+<li>预测</li>
+</ol>
+<h2 id="监督学习问题"><a href="#监督学习问题" class="headerlink" title="监督学习问题"></a>监督学习问题</h2><p>$(x_i, y_i),i=1,2,…,N$为样本点.</p>
+<p>$x_i\in X\subseteq \mathbb{R}^n$为输入的观测值.</p>
+<p>$y_i\in Y$输出的观测值.</p>
+<p>选取最好的模型,对训练数据集有很好的预测,对未知的测试数据集的预测也有很好的推广.</p>
+<script type="math/tex; mode=display">
+Method = Model + Strategy + Algorithm</script><h3 id="模型"><a href="#模型" class="headerlink" title="模型"></a>模型</h3><p>模型即假设空间,详见公式(2).</p>
+<h3 id="策略"><a href="#策略" class="headerlink" title="策略"></a>策略</h3><p>即为选优准则(经验风险最小/结构风险最小)</p>
+<h4 id="损失函数"><a href="#损失函数" class="headerlink" title="损失函数"></a>损失函数</h4><ul>
+<li>损失函数:一次预测的好坏</li>
+</ul>
+<p>损失函数为$f(X)$和$Y$的非负实值函数$L(Y,f(X))$</p>
+<p>常用的损失函数:</p>
+<ol>
+<li>0-1损失函数</li>
+<li>平方损失函数</li>
+<li>绝对损失函数</li>
+<li>对数(似然)函数</li>
+</ol>
+<h4 id="风险函数"><a href="#风险函数" class="headerlink" title="风险函数"></a>风险函数</h4><ul>
+<li>风险函数:多次预测的好坏</li>
+</ul>
+<script type="math/tex; mode=display">
+R_{\exp}=\mathbf{E}_P[L(Y,f(X))]=\int_X\int_Y L(y,f(x))P(x,y) \mathrm{d}x \mathrm{d}y</script><p>学习的目标:选择期望风险最小的模型.</p>
+<ul>
+<li>经验风险或平均风险.</li>
+</ul>
+<script type="math/tex; mode=display">
+R_{\mathrm{emf}} = \sum^N_{i=1} L(y_i,f(x_i))
+R_{\mathrm{emf}} \rightarrow R_{\exp}</script><ul>
+<li><p>经验风险最小化(ERM)和结构风险(SRM)最小化</p>
+<ul>
+<li>经验风险最小化</li>
+</ul>
+<script type="math/tex; mode=display">
+\min_{f\in\mathcal{F}} R_{\mathrm{emf}}(f) = \min_{f\in \mathcal{F}} \sum_{i=1}^N L(y_i,f(x_i))</script><ul>
+<li>结构风险最小化:经验风险+表示模型复杂度的正则化项.</li>
+</ul>
+<script type="math/tex; mode=display">
+\min_{f\in\mathcal{F}} R_\mathrm{smf}(f) = \min_{f\in \mathcal{F}} \sum_{i=1}^N L(y_i,f(x_i)) + \lambda J(f)</script></li>
+</ul>
+<h3 id="算法"><a href="#算法" class="headerlink" title="算法"></a>算法</h3><p>通过上面对策略的分析,可以将统计学习的问题归结为了最优化的问题.</p>
+<p>对简单问题,我们可以得到解析解. 对复杂的问题我们采用数值分析的方法进行求解.</p>
+<h2 id="模型选择"><a href="#模型选择" class="headerlink" title="模型选择"></a>模型选择</h2><ul>
+<li>避免过拟合的方法<ol>
+<li>正则化</li>
+<li>交叉验证</li>
+</ol>
+</li>
+</ul>
+<h3 id="常用的正则化项"><a href="#常用的正则化项" class="headerlink" title="常用的正则化项"></a>常用的正则化项</h3><ul>
+<li>L2范数</li>
+<li>L1范数</li>
+<li>贝叶斯估计的角度:正则化项对应于模型的先验概率. 条件减少熵(我自己加的).</li>
+</ul>
+<h2 id="泛化能力"><a href="#泛化能力" class="headerlink" title="泛化能力"></a>泛化能力</h2><ul>
+<li>模型对未知数据的预测能力</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2018/03/29/近期工作内容/" rel="prev" title="近期工作内容">
+      <i class="fa fa-chevron-left"></i> 近期工作内容
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2018/03/29/网易2017笔试题3/" rel="next" title="网易2017招聘第三题">
+      网易2017招聘第三题 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#统计学习方法第一章"><span class="nav-number">1.</span> <span class="nav-text">统计学习方法第一章</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#统计学习"><span class="nav-number">1.1.</span> <span class="nav-text">统计学习</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#统计学习的三要素"><span class="nav-number">1.2.</span> <span class="nav-text">统计学习的三要素</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#统计学习方法解决的问题"><span class="nav-number">1.3.</span> <span class="nav-text">统计学习方法解决的问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#学习的定义"><span class="nav-number">1.4.</span> <span class="nav-text">学习的定义</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#统计学习方法的研究内容"><span class="nav-number">1.5.</span> <span class="nav-text">统计学习方法的研究内容</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#统计学习方法的重要性"><span class="nav-number">1.6.</span> <span class="nav-text">统计学习方法的重要性</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#监督学习"><span class="nav-number">2.</span> <span class="nav-text">监督学习</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#输入空间-输出空间和特征空间"><span class="nav-number">2.1.</span> <span class="nav-text">输入空间, 输出空间和特征空间</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#训练数据集"><span class="nav-number">2.2.</span> <span class="nav-text">训练数据集</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#假设条件"><span class="nav-number">2.3.</span> <span class="nav-text">假设条件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#假设空间-学习范围"><span class="nav-number">2.4.</span> <span class="nav-text">假设空间(学习范围)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#具体实现的过程"><span class="nav-number">2.5.</span> <span class="nav-text">具体实现的过程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#监督学习问题"><span class="nav-number">2.6.</span> <span class="nav-text">监督学习问题</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#模型"><span class="nav-number">2.6.1.</span> <span class="nav-text">模型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#策略"><span class="nav-number">2.6.2.</span> <span class="nav-text">策略</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#损失函数"><span class="nav-number">2.6.2.1.</span> <span class="nav-text">损失函数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#风险函数"><span class="nav-number">2.6.2.2.</span> <span class="nav-text">风险函数</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#算法"><span class="nav-number">2.6.3.</span> <span class="nav-text">算法</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#模型选择"><span class="nav-number">2.7.</span> <span class="nav-text">模型选择</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#常用的正则化项"><span class="nav-number">2.7.1.</span> <span class="nav-text">常用的正则化项</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#泛化能力"><span class="nav-number">2.8.</span> <span class="nav-text">泛化能力</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Jimy Ma</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">41</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">27</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Jimy Ma</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script>
+<script src="/js/schemes/muse.js"></script>
+<script src="/js/next-boot.js"></script>
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

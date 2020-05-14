@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="GF( 256 ) 的构造步骤 Step 1： 找到本原多项式，构造线性反馈移位寄存器 Step 2： 构造有限域中乘方表示与向量表示的对照表 Step 3： 根据对照表完成有限域的加、减、乘、除的操作，不需要考虑求余( 为什么？ )  GF( 256 ) 的本原多项式GF( 256 ) = GF( $2^8$ )，本原多项式可以通过 MATLAB 生成： 12345678910111213141">
+<meta property="og:type" content="article">
+<meta property="og:title" content="GF( 256 ) 的构造">
+<meta property="og:url" content="http://yoursite.com/2018/07/03/GF256/index.html">
+<meta property="og:site_name" content="Jimy Ma&#39;s Zone">
+<meta property="og:description" content="GF( 256 ) 的构造步骤 Step 1： 找到本原多项式，构造线性反馈移位寄存器 Step 2： 构造有限域中乘方表示与向量表示的对照表 Step 3： 根据对照表完成有限域的加、减、乘、除的操作，不需要考虑求余( 为什么？ )  GF( 256 ) 的本原多项式GF( 256 ) = GF( $2^8$ )，本原多项式可以通过 MATLAB 生成： 12345678910111213141">
+<meta property="og:locale" content="zh">
+<meta property="og:updated_time" content="2018-07-15T05:47:00.681Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="GF( 256 ) 的构造">
+<meta name="twitter:description" content="GF( 256 ) 的构造步骤 Step 1： 找到本原多项式，构造线性反馈移位寄存器 Step 2： 构造有限域中乘方表示与向量表示的对照表 Step 3： 根据对照表完成有限域的加、减、乘、除的操作，不需要考虑求余( 为什么？ )  GF( 256 ) 的本原多项式GF( 256 ) = GF( $2^8$ )，本原多项式可以通过 MATLAB 生成： 12345678910111213141">
+
+<link rel="canonical" href="http://yoursite.com/2018/07/03/GF256/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh'
+  };
+</script>
+
+  <title>GF( 256 ) 的构造 | Jimy Ma's Zone</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Jimy Ma's Zone</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/07/03/GF256/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Jimy Ma">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jimy Ma's Zone">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          GF( 256 ) 的构造
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2018-07-03 00:00:00" itemprop="dateCreated datePublished" datetime="2018-07-03T00:00:00+08:00">2018-07-03</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2018-07-15 13:47:00" itemprop="dateModified" datetime="2018-07-15T13:47:00+08:00">2018-07-15</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Information-theory/" itemprop="url" rel="index"><span itemprop="name">Information theory</span></a>
+                </span>
+                  , 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Information-theory/Coding-theory/" itemprop="url" rel="index"><span itemprop="name">Coding theory</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><h1 id="GF-256-的构造"><a href="#GF-256-的构造" class="headerlink" title="GF( 256 ) 的构造"></a>GF( 256 ) 的构造</h1><h2 id="步骤"><a href="#步骤" class="headerlink" title="步骤"></a>步骤</h2><ul>
+<li><strong>Step 1：</strong> 找到本原多项式，构造线性反馈移位寄存器</li>
+<li><strong>Step 2：</strong> 构造有限域中乘方表示与向量表示的对照表</li>
+<li><strong>Step 3：</strong> 根据对照表完成有限域的加、减、乘、除的操作，不需要考虑求余( 为什么？ )</li>
+</ul>
+<h2 id="GF-256-的本原多项式"><a href="#GF-256-的本原多项式" class="headerlink" title="GF( 256 ) 的本原多项式"></a>GF( 256 ) 的本原多项式</h2><p>GF( 256 ) = GF( $2^8$ )，本原多项式可以通过 <strong>MATLAB</strong> 生成：</p>
+<figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt; primpoly(<span class="number">8</span>,<span class="string">'all'</span>)</span><br><span class="line"></span><br><span class="line">Primitive polynomial(s) =</span><br><span class="line"></span><br><span class="line">D^<span class="number">8</span>+D^<span class="number">4</span>+D^<span class="number">3</span>+D^<span class="number">2</span>+<span class="number">1</span></span><br><span class="line">D^<span class="number">8</span>+D^<span class="number">5</span>+D^<span class="number">3</span>+D^<span class="number">1</span>+<span class="number">1</span></span><br><span class="line">D^<span class="number">8</span>+D^<span class="number">5</span>+D^<span class="number">3</span>+D^<span class="number">2</span>+<span class="number">1</span></span><br><span class="line">D^<span class="number">8</span>+D^<span class="number">6</span>+D^<span class="number">3</span>+D^<span class="number">2</span>+<span class="number">1</span></span><br><span class="line">D^<span class="number">8</span>+D^<span class="number">6</span>+D^<span class="number">4</span>+D^<span class="number">3</span>+D^<span class="number">2</span>+D^<span class="number">1</span>+<span class="number">1</span></span><br><span class="line">D^<span class="number">8</span>+D^<span class="number">6</span>+D^<span class="number">5</span>+D^<span class="number">1</span>+<span class="number">1</span></span><br><span class="line">D^<span class="number">8</span>+D^<span class="number">6</span>+D^<span class="number">5</span>+D^<span class="number">2</span>+<span class="number">1</span></span><br><span class="line">D^<span class="number">8</span>+D^<span class="number">6</span>+D^<span class="number">5</span>+D^<span class="number">3</span>+<span class="number">1</span></span><br><span class="line">D^<span class="number">8</span>+D^<span class="number">6</span>+D^<span class="number">5</span>+D^<span class="number">4</span>+<span class="number">1</span></span><br><span class="line">D^<span class="number">8</span>+D^<span class="number">7</span>+D^<span class="number">2</span>+D^<span class="number">1</span>+<span class="number">1</span></span><br><span class="line">D^<span class="number">8</span>+D^<span class="number">7</span>+D^<span class="number">3</span>+D^<span class="number">2</span>+<span class="number">1</span></span><br><span class="line">D^<span class="number">8</span>+D^<span class="number">7</span>+D^<span class="number">5</span>+D^<span class="number">3</span>+<span class="number">1</span></span><br><span class="line">D^<span class="number">8</span>+D^<span class="number">7</span>+D^<span class="number">6</span>+D^<span class="number">1</span>+<span class="number">1</span></span><br><span class="line">D^<span class="number">8</span>+D^<span class="number">7</span>+D^<span class="number">6</span>+D^<span class="number">3</span>+D^<span class="number">2</span>+D^<span class="number">1</span>+<span class="number">1</span></span><br><span class="line">D^<span class="number">8</span>+D^<span class="number">7</span>+D^<span class="number">6</span>+D^<span class="number">5</span>+D^<span class="number">2</span>+D^<span class="number">1</span>+<span class="number">1</span></span><br><span class="line">D^<span class="number">8</span>+D^<span class="number">7</span>+D^<span class="number">6</span>+D^<span class="number">5</span>+D^<span class="number">4</span>+D^<span class="number">2</span>+<span class="number">1</span></span><br></pre></td></tr></table></figure>
+<p>我们选择一个去实现就可以了，选择第一个构造线性反馈移位寄存器。</p>
+<h2 id="实现线性反馈移位寄存器"><a href="#实现线性反馈移位寄存器" class="headerlink" title="实现线性反馈移位寄存器"></a>实现线性反馈移位寄存器</h2><p>采用移位亦或的方法进行实现。</p>
+<h2 id="构造乘方表示与向量表示的对照表"><a href="#构造乘方表示与向量表示的对照表" class="headerlink" title="构造乘方表示与向量表示的对照表"></a>构造乘方表示与向量表示的对照表</h2><p>根据线性反馈寄存器依次得到向量表示的对照表。</p>
+<h2 id="加减乘除四则运算"><a href="#加减乘除四则运算" class="headerlink" title="加减乘除四则运算"></a>加减乘除四则运算</h2><ul>
+<li>加： 按位亦或得到新的向量表示再通过查表的方法进行更新乘方表示。</li>
+<li>减： 同加</li>
+<li>乘：<ul>
+<li>法1. 被乘数作为基，根据乘数判断是否需要移位，将移位后的数亦或，然后更新乘方表示。</li>
+<li>法2. 对应的乘方相加，查找找到向量表示( $\surd$ )。</li>
+</ul>
+</li>
+<li>除： 乘的逆运算</li>
+</ul>
+<p><strong>注：</strong> 查表的复杂度为 $O(1)$，所以尽量选择查表的方法。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2018/07/03/Kraft不等式/" rel="prev" title="Kraft 不等式的证明">
+      <i class="fa fa-chevron-left"></i> Kraft 不等式的证明
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2018/07/08/Berlekamp_sim/" rel="next" title="Berlekamp 算法 - 仿真分析">
+      Berlekamp 算法 - 仿真分析 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#GF-256-的构造"><span class="nav-number">1.</span> <span class="nav-text">GF( 256 ) 的构造</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#步骤"><span class="nav-number">1.1.</span> <span class="nav-text">步骤</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#GF-256-的本原多项式"><span class="nav-number">1.2.</span> <span class="nav-text">GF( 256 ) 的本原多项式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#实现线性反馈移位寄存器"><span class="nav-number">1.3.</span> <span class="nav-text">实现线性反馈移位寄存器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#构造乘方表示与向量表示的对照表"><span class="nav-number">1.4.</span> <span class="nav-text">构造乘方表示与向量表示的对照表</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#加减乘除四则运算"><span class="nav-number">1.5.</span> <span class="nav-text">加减乘除四则运算</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Jimy Ma</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">41</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">27</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Jimy Ma</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script>
+<script src="/js/schemes/muse.js"></script>
+<script src="/js/next-boot.js"></script>
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
