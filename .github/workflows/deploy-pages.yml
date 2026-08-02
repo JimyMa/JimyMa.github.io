@@ -19,25 +19,9 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      pages: write
     steps:
       - name: Check out source
         uses: actions/checkout@v4
-
-      - name: Use GitHub Actions as the Pages source
-        if: github.event_name != 'pull_request'
-        env:
-          GH_TOKEN: ${{ github.token }}
-          GH_REPOSITORY: ${{ github.repository }}
-        run: |
-          curl --fail-with-body --request PUT \
-            --url "https://api.github.com/repos/${GH_REPOSITORY}/pages" \
-            --header "Accept: application/vnd.github+json" \
-            --header "Authorization: Bearer ${GH_TOKEN}" \
-            --header "X-GitHub-Api-Version: 2022-11-28" \
-            --data '{"build_type":"workflow"}'
 
       - name: Set up Node.js
         uses: actions/setup-node@v4
