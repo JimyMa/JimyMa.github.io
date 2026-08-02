@@ -1,28 +1,6 @@
 export const BlogStyles = theme => ({
-  inputPaper: {
-    padding: theme.spacing(1),
-    height: 1000,
-    overflow: 'auto',
-    maxWidth: "100%",
-  },
-  todoItemPaper: {
-    padding: theme.spacing(2),
-    display: 'flex',
-    overflow: 'auto',
-    flexDirection: 'column',
-  },
   root: {
     maxWidth: "100%",
-  },
-  title: {
-    fontSize: 12,
-  },
-  appBar: {
-    zIndex: theme.zIndex.drawer + 1,
-    transition: theme.transitions.create(['width', 'margin'], {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.leavingScreen,
-    }),
   },
   sidebar: {
     position: 'fixed',
@@ -44,11 +22,6 @@ export const BlogStyles = theme => ({
     height: theme.spacing(16),
     margin: '0 auto 16px',
   },
-  contactItem: {
-    display: 'flex',
-    alignItems: 'center',
-    marginBottom: theme.spacing(2),
-  },
   contactIcon: {
     marginRight: theme.spacing(2),
     color: theme.palette.primary.main,
@@ -69,13 +42,6 @@ export const BlogStyles = theme => ({
   },
   newsContent: {
     lineHeight: 1.6,
-  },
-  appBar: {
-    zIndex: theme.zIndex.drawer + 1,
-    transition: theme.transitions.create(['width', 'margin'], {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.leavingScreen,
-    }),
   },
   // 增强响应式设计，确保所有设备上宽度一致
   '@media (max-width:600px)': {
@@ -105,9 +71,6 @@ export const BlogStyles = theme => ({
     avatar: {
       width: theme.spacing(12),
       height: theme.spacing(12),
-    },
-    contactItem: {
-      marginBottom: theme.spacing(1.5),
     },
     // 添加顶层容器样式，确保所有内容都在相同的宽度限制内
     '@global': {

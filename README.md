@@ -4,6 +4,8 @@ Personal homepage built with React and Material UI. The editable source was reco
 from the source maps of the previously deployed site; the visual layout, theme, and
 published content are retained.
 
+Current release: **v0.2.0**
+
 ## Development
 
 ```bash
@@ -22,8 +24,7 @@ npm run build
 ```text
 src/
 ├── assets/       Images imported by React components
-├── components/   Page and reusable UI components
-├── content/      Editable article and lesson data
+├── components/   Homepage content and layout
 ├── styles/       Material UI theme and component styles
 ├── App.js        Router and top-level providers
 └── index.js      Browser entry point

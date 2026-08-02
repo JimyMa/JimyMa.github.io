@@ -2,12 +2,9 @@ import React, {Component} from 'react';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
-import Grid from '@material-ui/core/Grid';
 import Avatar from '@material-ui/core/Avatar';
 import Paper from '@material-ui/core/Paper';
-import PhoneIcon from '@material-ui/icons/Phone';
 import MailIcon from '@material-ui/icons/Mail';
-import HomeIcon from '@material-ui/icons/Home';
 import GitHubIcon from '@material-ui/icons/GitHub';
 import LinkedinIcon from '@material-ui/icons/LinkedIn';
 import TwitterIcon from '@material-ui/icons/Twitter';
@@ -15,16 +12,10 @@ import BookIcon from '@material-ui/icons/Book'; // 用于Google Scholar
 
 import {BlogStyles} from '../styles/BlogStyles'
 import {withStyles, withTheme} from '@material-ui/styles'
-import {Link} from 'react-router-dom'
-import {withRouter} from 'react-router-dom'
 
 import hitLogo from '../assets/hit-logo.svg'; // 添加这一行
 
 class Blog extends Component {
-  constructor(props) {
-    super(props);
-  }
-
   render() {
     const {classes} = this.props
     return (
@@ -85,7 +76,7 @@ class Blog extends Component {
               <Typography variant="body1" component="p">
               Hello, I am Jinming Ma (麻 津铭).
               I received a B.S. and an M.S. from Harbin Institute of Technology, under the guidance of
-              Profs. <a href="https://researchoutput.ncku.edu.tw/en/persons/hsiao-hwa-chen" target="_blank">Hsiao-Hwa Chen</a> and <a href="https://homepage.hit.edu.cn/yuqiyue" target="_blank">Qiyue Yu</a>.
+              Profs. <a href="https://researchoutput.ncku.edu.tw/en/persons/hsiao-hwa-chen" target="_blank" rel="noopener noreferrer">Hsiao-Hwa Chen</a> and <a href="https://homepage.hit.edu.cn/yuqiyue" target="_blank" rel="noopener noreferrer">Qiyue Yu</a>.
   Currently, I work as a Young Researcher at the Shanghai AI Laboratory, primarily focusing on the design and implementation of high-performance distributed LLM Serving and communication libraries.
               </Typography>
             </CardContent>
@@ -322,7 +313,9 @@ class Blog extends Component {
               <div style={{display: 'flex', alignItems: 'flex-start', padding: '16px', backgroundColor: 'rgba(0,0,0,0.02)', borderRadius: '8px', marginBottom: '16px'}}>
                 <div style={{flex: 1}}>
                   <Typography variant="subtitle1" color="primary" gutterBottom>
-                    Tropical: Enhancing SLO Attainment in Disaggregated LLM Serving via SLO-Aware Multiplexing
+                    <a href="https://arxiv.org/abs/2606.16264" target="_blank" rel="noopener noreferrer">
+                      Tropical: Enhancing SLO Attainment in Disaggregated LLM Serving via SLO-Aware Multiplexing
+                    </a>
                   </Typography>
                   <Typography variant="body2" component="p">
                     Ma, Jinming*; Chen, Jiefei*; Li, Xiuhong; Duan, Jiangfei; Duanmu, Haojie; Zhang, Xingcheng; Yang, Chao; Lin, Dahua
@@ -331,7 +324,10 @@ class Blog extends Component {
                     62nd ACM/IEEE Design Automation Conference (DAC) | 2025
                   </Typography>
                   <Typography variant="body2" component="p" style={{marginBottom: '8px'}}>
-                    DOI: 10.1109/DAC63849.2025.11132617
+                    DOI: <a href="https://doi.org/10.1109/DAC63849.2025.11132617" target="_blank" rel="noopener noreferrer">10.1109/DAC63849.2025.11132617</a>
+                  </Typography>
+                  <Typography variant="body2" component="p" style={{marginBottom: '8px'}}>
+                    arXiv: <a href="https://arxiv.org/abs/2606.16264" target="_blank" rel="noopener noreferrer">2606.16264</a>
                   </Typography>
 
                 </div>
@@ -474,4 +470,4 @@ class Blog extends Component {
   }
 }
 
-export default (withTheme(withStyles(BlogStyles)(withRouter(Blog))));
+export default withTheme(withStyles(BlogStyles)(Blog));
