@@ -4,7 +4,7 @@ Personal homepage built with React and Material UI. The editable source was reco
 from the source maps of the previously deployed site; the visual layout, theme, and
 published content are retained.
 
-Current release: **v0.2.0**
+Current release: **v0.3.0**
 
 ## Development
 

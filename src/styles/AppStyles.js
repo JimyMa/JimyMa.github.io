@@ -21,11 +21,19 @@ export const ContentStyles = theme => ({
   content: {
     backgroundColor:
       theme.palette.grey[100],
-    flexGrow: 1,
-    height: '100vh',
+    position: 'fixed',
+    top: 64,
+    right: 0,
+    bottom: 0,
+    left: 0,
     overflow: 'auto',
+    [theme.breakpoints.down('xs')]: {
+      top: 56,
+    },
+    '@media (max-width:600px) and (orientation: landscape)': {
+      top: 48,
+    },
   },
-  appBarSpacer: theme.mixins.toolbar,
   container: {
     paddingTop: theme.spacing(4),
     paddingBottom: theme.spacing(4),

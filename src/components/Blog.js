@@ -19,7 +19,7 @@ class Blog extends Component {
   render() {
     const {classes} = this.props
     return (
-      <div>
+      <div className={classes.layout}>
         {/* 左侧固定个人信息部分 */}
         <Paper className={classes.sidebar} elevation={3}>
           {/* 保留头像 */}
@@ -93,6 +93,7 @@ class Blog extends Component {
               <Typography gutterBottom variant="h5" component="h2">
                 News
               </Typography>
+              <div className={classes.newsList}>
               <div className={classes.newsItem}>
                 <Typography variant="subtitle2" className={classes.newsDate}>
                   July 2026
@@ -124,6 +125,7 @@ class Blog extends Component {
                 <Typography variant="body2" className={classes.newsContent} component="p">
                 Our paper <a href="https://www.google.com/url?sa=t&rct=j&q=&esrc=s&source=web&cd=&cad=rja&uact=8&ved=2ahUKEwiznKP8-5GQAxVLJ0QIHeF4MzMQFnoECBkQAQ&url=https%3A%2F%2Fdl.acm.org%2Fdoi%2F10.1145%2F3649329.3658483&usg=AOvVaw1qTjoUjhwb33A1spa8QHo5&opi=89978449" target="_blank" rel="noopener noreferrer">TensorSSA: A Holistic Functionalization Approach to Optimizing Imperative Tensor Programs in Deep Learning </a> was accepted to the 61st DAC!
                 </Typography>
+              </div>
               </div>
             </CardContent>
           </Card>
@@ -290,6 +292,7 @@ class Blog extends Component {
               <Typography gutterBottom variant="h5" component="h2">
                 Publications
               </Typography>
+              <div className={classes.publicationList}>
 
               {/* NanoCP */}
               <div style={{display: 'flex', alignItems: 'flex-start', padding: '16px', backgroundColor: 'rgba(0,0,0,0.02)', borderRadius: '8px', marginBottom: '16px'}}>
@@ -390,6 +393,7 @@ class Blog extends Component {
                     DOI: 10.1145/3545008.3545037
                   </Typography>
                 </div>
+              </div>
               </div>
             </CardContent>
           </Card>

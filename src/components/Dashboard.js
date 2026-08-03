@@ -47,7 +47,7 @@ export default function Dashboard() {
 
       <CssBaseline />
       <AppBar
-        position="absolute"
+        position="fixed"
         className={classes.appBar}
       >
         <Toolbar className={classes.toolbar}>
@@ -64,8 +64,6 @@ export default function Dashboard() {
       </AppBar>
 
       <main className={classes.content}>
-        <div className={classes.appBarSpacer} />
-
           <Container maxWidth="lg" className={classes.container}>
             <Blog/>
             <Box pt={4}>

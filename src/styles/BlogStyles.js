@@ -1,21 +1,28 @@
 export const BlogStyles = theme => ({
+  layout: {
+    display: 'grid',
+    gridTemplateColumns: '250px minmax(0, 1fr)',
+    gap: theme.spacing(4),
+    alignItems: 'start',
+  },
   root: {
     maxWidth: "100%",
   },
   sidebar: {
-    position: 'fixed',
-    width: '250px',
-    height: '100%',
+    position: 'sticky',
+    top: theme.spacing(4),
+    width: '100%',
+    height: 'calc(100vh - 128px)',
     padding: theme.spacing(3),
     backgroundColor: theme.palette.background.paper,
     borderRight: `1px solid ${theme.palette.divider}`,
-    overflow: 'hidden',
+    overflowX: 'hidden',
+    overflowY: 'scroll',
+    boxSizing: 'border-box',
   },
   mainContent: {
-    marginLeft: '280px',
-    width: `calc(100% - 280px)`,
-    overflow: 'auto',
-    padding: theme.spacing(2),
+    minWidth: 0,
+    width: '100%',
   },
   avatar: {
     width: theme.spacing(16),
@@ -43,13 +50,29 @@ export const BlogStyles = theme => ({
   newsContent: {
     lineHeight: 1.6,
   },
+  newsList: {
+    maxHeight: '320px',
+    overflowY: 'scroll',
+    paddingRight: theme.spacing(1),
+  },
+  publicationList: {
+    maxHeight: '520px',
+    overflowY: 'scroll',
+    paddingRight: theme.spacing(1),
+  },
   // 增强响应式设计，确保所有设备上宽度一致
   '@media (max-width:600px)': {
+    layout: {
+      display: 'block',
+    },
     sidebar: {
       position: 'static',
+      top: 'auto',
+      bottom: 'auto',
       width: '100%',
       maxWidth: '100%',
       height: 'auto',
+      overflow: 'visible',
       borderRight: 'none',
       borderBottom: `1px solid ${theme.palette.divider}`,
       marginBottom: theme.spacing(2),
