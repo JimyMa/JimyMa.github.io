@@ -7,15 +7,6 @@ on:
   pull_request:
     branches:
       - main
-  # While Pages is still configured with the legacy branch source, its generated
-  # workflow can finish after this one and overwrite the React build. Redeploy
-  # once that workflow completes. This fallback becomes dormant after the Pages
-  # source is switched to GitHub Actions in the repository settings.
-  workflow_run:
-    workflows:
-      - pages build and deployment
-    types:
-      - completed
   workflow_dispatch:
 
 permissions:
