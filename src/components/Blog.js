@@ -24,7 +24,7 @@ class Blog extends Component {
         <Paper className={classes.sidebar} elevation={3}>
           {/* 保留头像 */}
           <div style={{display: 'flex', justifyContent: 'center', gap: '10px', marginBottom: '16px'}}>
-            <Avatar className={classes.avatar} alt="Jinming Ma" src={`${process.env.PUBLIC_URL}/JimyMa.png`} />
+            <Avatar className={classes.avatar} alt="Jinming Ma" src={`${process.env.PUBLIC_URL}/JimyMa-avatar.png`} />
             {/* 可以添加更多头像，它们会自动并排显示 */}
           </div>
 
