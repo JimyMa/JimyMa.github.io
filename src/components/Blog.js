@@ -24,7 +24,7 @@ class Blog extends Component {
         <Paper className={classes.sidebar} elevation={3}>
           {/* 保留头像 */}
           <div style={{display: 'flex', justifyContent: 'center', gap: '10px', marginBottom: '16px'}}>
-            <Avatar className={classes.avatar} alt="用户头像" src="https://picsum.photos/200" />
+            <Avatar className={classes.avatar} alt="Jinming Ma" src={`${process.env.PUBLIC_URL}/JimyMa.png`} />
             {/* 可以添加更多头像，它们会自动并排显示 */}
           </div>
 
@@ -63,6 +63,11 @@ class Blog extends Component {
               <BookIcon className={classes.contactIcon} />
             </a>
           </div>
+          <Typography variant="body2" align="center">
+            <a href="mailto:hit16s105116@gmail.com" style={{color: 'inherit'}}>
+              hit16s105116@gmail.com
+            </a>
+          </Typography>
         </Paper>
 
         {/* 右侧可滚动内容部分 */}
